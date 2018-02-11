@@ -170,7 +170,7 @@ app.get("/detailed_info/:id" , function(req,res)
         {
             if (err) throw err;
         });
-        connection.query("select * from batting_info where cricket_id="+req.params.id.toString(),function(err,result)
+        connection.query("select bi.*,ci.comment,ci.name from batting_info bi join cricket_info ci on ci.id=bi.cricket_id where cricket_id="+req.params.id.toString(),function(err,result)
         {
             if (err) throw err;
             res.render("detailed_info",{data : result})
