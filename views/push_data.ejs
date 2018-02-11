@@ -1,0 +1,61 @@
+<html>
+	<head>
+		<title>Sample Widget Page</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <script src = "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+	</head>
+			
+	<body>
+		<% i=1 %>
+		<% data.forEach(function(item){ %> 	
+      	<div  style = "padding:2%;">
+	         <h4><%= item.name %></h4>
+			 <label>Update batting: </label>
+			 <select id="batting_<%= i %>" class="bat_bowl">
+				<option value=<%= item.batting_status%>><%= item.batting_status %></option>
+				<option value=<%= item.bowling_status%>><%= item.bowling_status %></option> 
+			 </select>
+			 <br>
+			 <label>Update Run: </label>
+			 <input type="text" id="run_<%= i %>" name="run_<%= i %>" value ="<%= item.total_run_bat %>"> 
+			 <br>
+			 <label>Update Wicket: </label>
+			 <input type="text" id="wicket_<%= i %>" name="wicket_<%= i %>" value ="<%= item.total_wicket_bat %>"> 
+			 <br>
+			 <label>Update over: </label>
+			 <input type="text" id="over_<%= i %>" name="over_<%= i %>" value ="<%= item.total_over_bat %>"> 
+			<br><br>
+	      <label>Comment: </label><textarea id="comment_<%= i %>" rows="1" cols=""></textarea><br>
+	        <input type="button" id="push_<%= i %>" class="update" value="Update">
+        
+    </div>
+    <% i= i+1%>
+     <% }); %>
+	</body>
+</html>
+
+
+	<script src="/socket.io/socket.io.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script>
+    $(document).ready(function(){
+          var socket = io();
+          $(".update").click(function(){
+          	id=this.id.split("_")[1]
+            socket.emit('update',id,$("#comment_"+id).val(),$("#run_"+id).val(),$("#wicket_"+id).val(),$("#over_"+id).val(),$("#batting_"+id).val());
+          });
+          $(".bat_bowl").change(function(){
+          	id1=this.id.split("_")[1]
+          	$.get("/ajax_data",{id : id1,country : $("#"+this.id).val()},function(data)
+          	{
+          		console.log(data.run);
+          		 $("#run_"+id1).val(data.run);
+          		$("#over_"+id1).val(data.over);
+          		$("#wicket_"+id1).val(data.wicket);
+          	})
+
+          });
+
+    });
+    </script>

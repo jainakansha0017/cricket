@@ -1,0 +1,162 @@
+<html>
+	<head>
+		<title>Sample Widget Page</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <script src = "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+	</head>
+	
+	<body>
+		<div style="background-color:#17abcc; text-align:center;color:white;padding:16px 16px"><div>International Cricket</div></div>
+		<br>
+		<div class="container">
+				  <div class="row" >
+				  	<% i=1 %>
+					<% data.forEach(function(item){ %> 	
+					    <div class="col-lg-4 abc" id="r_<%= i %>">
+					    	<strong><%= item.name %></strong><br><br>
+					    	<% if( item.name.split(" ")[0]==item.batting_status)
+					    		{
+					    			if(item.total_run_bat!=0) { %>
+					    				<strong id="name_<%= i %>_1"><%= item.name.split(" ")[0] %></strong> - <span id="id_<%= i %>_score_1"><%= item.total_run_bat %>/<%= item.total_wicket_bat %>(<%= item.total_over_bat %>)</span>
+					    			<% }else{ %>
+					    				<strong id="name_<%= i %>_1"><%= item.name.split(" ")[0] %></strong> - <span id="id_<%= i %>_score_1">Yet to Bat</span>
+					    		<% }}
+					    		else 
+					    			{
+					    			if(item.total_run_bowl!=0){ %>
+					    				<% if(item.total_run_bowl==item.total_run_bat && item.total_over_bat==item.total_over_bowl)%>
+					    				<%{ %>
+					    				<strong id="name_<%= i %>_1"><%= item.name.split(" ")[0] %></strong> - <span id="id_<%= i %>_score_1">Yet to Bat</span>
+					    				<% } %>
+					    				<!--  else  %>
+					    				<strong id="name_<%= i %>_1"><%= item.name.split(" ")[0] %></strong> - <span id="id_<%= i %>_score_1"><%= item.total_run_bowl %>/<%= item.total_wicket_bowl %>(<%= item.total_over_bowl %>)</span> -->
+					    			<% }else{ %>
+					    				<strong id="name_<%= i %>_1"><%= item.name.split(" ")[0] %></strong> - <span id="id_<%= i %>_score_1">Yet to Bat</span>
+					    		<% }} %>
+					        <br>
+					    	<% if( item.name.split(" ")[2]==item.batting_status)
+					    		{
+					    			if(item.total_run_bat!=0) { %>
+					    				<strong id="name_<%= i %>_2"><%= item.name.split(" ")[2] %></strong> - <span id="id_<%= i %>_score_2"><%= item.total_run_bat %>/<%= item.total_wicket_bat %>(<%= item.total_over_bat %>)</span>
+					    			<% }else{ %>
+					    				<strong id="name_<%= i %>_2"><%= item.name.split(" ")[2] %></strong> - <span id="id_<%= i %>_score_2">Yet to Bat</span>
+					    		<% }}
+					    		else {
+					    			if(item.total_run_bowl!=0){ %>
+					    				<strong id="name_<%= i %>_2"><%= item.name.split(" ")[2] %></strong> - <span id="id_<%= i %>_score_2"><%= item.total_run_bowl %>/<%= item.total_wicket_bowl %>(<%= item.total_over_bowl %>)</span>
+					    			<% }else{ %>
+					    				<strong id="name_<%= i %>_2"><%= item.name.split(" ")[2] %></strong> - <span id="id_<%= i %>_score_2">Yet to Bat</span>
+					    		<% }} %>
+					    	<!-- <strong>BAN</strong> - <span id="id_1_score_2">Yet to Bat</span> -->
+					    	<p id="comment_<%= i %>" style="color:red"></p>
+					    </div>
+					    <% i= i+1 %>
+					    <% if (i==4)
+					    { %>
+
+				  
+				  </div>
+
+				  <br><br><br>
+				  <div class="row">
+
+				  	<%}})%>
+				  
+				  </div>
+				  
+  </div>
+
+	</body>
+</html>
+<script src="/socket.io/socket.io.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script>
+    $(document).ready(function(){
+          var socket = io();
+          
+          socket.on('refresh feed',function(id,comment,run,wicket,over,batting){
+          	// alert("--------------")
+          	console.log(id);
+          	console.log(comment);
+          	console.log(run);
+          	console.log(wicket);
+          	console.log(over);
+          	console.log(batting);
+          	if($("#name_"+id+"_1").html()==batting)
+          	{
+          		if($("#id_"+id+"_score_1").html()=="Yet to Bat")
+          		{
+          			if(run==parseInt($("#id_"+id+"_score_2").html().split("/")[0]))
+          			{
+
+          			}
+          			else
+          				$("#id_"+id+"_score_1").html(run+"/"+wicket+"("+over+")");
+
+          		}
+          		else
+          		{
+          			$("#id_"+id+"_score_1").html(run+"/"+wicket+"("+over+")");
+          		}
+          	}
+            	// $("#id_"+id+"_score_1").html(run+"/"+wicket+"("+over+")");
+            else
+            {
+            	if($("#id_"+id+"_score_2").html()=="Yet to Bat")
+          		{
+            	if(run==parseInt($("#id_"+id+"_score_1").html().split("/")[0]))
+          			{
+          				// console.log("000000000")
+          			}
+          			else
+          				$("#id_"+id+"_score_2").html(run+"/"+wicket+"("+over+")");
+
+          		}
+          		else
+          			$("#id_"+id+"_score_2").html(run+"/"+wicket+"("+over+")");
+            }
+            	// $("#id_"+id+"_score_2").html(run+"/"+wicket+"("+over+")");
+          
+            $("#comment_"+id).html(comment);
+            
+
+          });
+          // socket.on('refresh feed',function(res){
+          // 	// alert("--------------")
+          // 	 console.log(res);
+          // 	// console.log(comment);
+          // 	// console.log(run);
+          // 	// console.log(wicket);
+          // 	// console.log(over);
+          // 	// console.log(batting);
+          // 	if($("#name_"+res[0].id+"_1").html()==res[0].batting_status)
+          // 	{
+          // 		if(res[0].total_run_bat!=0)
+          // 			$("#id_"+res[0].id+"_score_1").html(res[0].total_run_bat+"/"+res[0].total_wicket_bat+"("+res[0].total_over_bat+")");
+          // 		else
+          // 			$("#id_"+res[0].id+"_score_1").html("Yet to Bat");
+          // 	}
+            	
+          //   else
+          //   {
+          //   	if(res[0].total_run_bowl!=0)
+          // 			$("#id_"+res[0].id+"_score_2").html(res[0].total_run_bowl+"/"+res[0].total_wicket_bowl+"("+res[0].total_over_bowl+")");
+          // 		else
+          // 			$("#id_"+res[0].id+"_score_2").html("Yet to Bat");
+          //   }
+          //   	// $("#id_"+id+"_score_2").html(run+"/"+wicket+"("+over+")");
+            
+            
+
+          // });
+    });
+    </script>
+// <script>
+//     $(document).ready(function(){
+//          $("#abc").click(function()
+//          {
+//          	window.location="/example/"+this.id;
+//          })
+//     });
+//     </script>
