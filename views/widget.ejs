@@ -13,7 +13,7 @@
 				  <div class="row" >
 				  	<% i=1 %>
 					<% data.forEach(function(item){ %> 	
-					    <div class="col-lg-4 abc" id="r_<%= i %>">
+					    <div class="col-lg-4 abc" id="r_<%= i %>" style="cursor:pointer">
 					    	<strong><%= item.name %></strong><br><br>
 					    	<% if( item.name.split(" ")[0]==item.batting_status)
 					    		{
@@ -122,34 +122,11 @@
             
 
           });
-          // socket.on('refresh feed',function(res){
-          // 	// alert("--------------")
-          // 	 console.log(res);
-          // 	// console.log(comment);
-          // 	// console.log(run);
-          // 	// console.log(wicket);
-          // 	// console.log(over);
-          // 	// console.log(batting);
-          // 	if($("#name_"+res[0].id+"_1").html()==res[0].batting_status)
-          // 	{
-          // 		if(res[0].total_run_bat!=0)
-          // 			$("#id_"+res[0].id+"_score_1").html(res[0].total_run_bat+"/"+res[0].total_wicket_bat+"("+res[0].total_over_bat+")");
-          // 		else
-          // 			$("#id_"+res[0].id+"_score_1").html("Yet to Bat");
-          // 	}
-            	
-          //   else
-          //   {
-          //   	if(res[0].total_run_bowl!=0)
-          // 			$("#id_"+res[0].id+"_score_2").html(res[0].total_run_bowl+"/"+res[0].total_wicket_bowl+"("+res[0].total_over_bowl+")");
-          // 		else
-          // 			$("#id_"+res[0].id+"_score_2").html("Yet to Bat");
-          //   }
-          //   	// $("#id_"+id+"_score_2").html(run+"/"+wicket+"("+over+")");
-            
-            
-
-          // });
+          $(".abc").click(function()
+          {
+          	var id2=this.id.split("_")[1];
+          	window.open("/detailed_info/"+id2);
+          })
     });
     </script>
 // <script>

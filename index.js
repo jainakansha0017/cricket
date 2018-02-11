@@ -54,7 +54,7 @@ pool.getConnection(function(err, connection) {
 		    	console.log(results);
 		    	
 		    });
-		    connection.query("insert into cricket_info values(3,'ENG vs AUS','ENG','AUG','QWE','ERT','TYU','IUY',100,5,4,0,0,0,null,now())", function (error, results) 
+		    connection.query("insert into cricket_info values(3,'ENG vs AUS','ENG','AUS','QWE','ERT','TYU','IUY',100,5,4,0,0,0,null,now())", function (error, results) 
 		    {
 		    	console.log(results);
 		    	
@@ -78,7 +78,48 @@ pool.getConnection(function(err, connection) {
 
     	
     });
+    connection.query("select * from batting_info", function (error, results) 
+    {
+        console.log(results.length);
+        if(results.length==0)
+        {
+            connection.query("insert into batting_info values(1,'A',5,2,0,0),(1,'B',14,8,1,0)", function (error, results) 
+            {
+                console.log(results);
+                
+            });
+            connection.query("insert into batting_info values(2,'ABC',20,8,1,0),(2,'BCV',30,8,1,1)", function (error, results) 
+            {
+                console.log(results);
+                
+            });
+            connection.query("insert into batting_info values(3,'QWE',50,10,2,4),(3,'ERT',10,2,0,0)", function (error, results) 
+            {
+                console.log(results);
+                
+            });
+            connection.query("insert into batting_info values(4,'ASD',100,20,4,4),(4,'DFG',50,10,2,0)", function (error, results) 
+            {
+                console.log(results);
+                
+            });
+            
+            connection.query("insert into batting_info values(5,'QWERT',150,40,7,2),(5,'WERT',45,12,3,2)", function (error, results) 
+            {
+                console.log(results);
+                
+            });
+            connection.query("insert into batting_info values(6,'HJK',14,8,1,0),(6,'JKL',14,8,1,0)", function (error, results) 
+            {
+                console.log(results);
+                
+            });
+           
 
+        }
+
+        
+    });
     
     // connection.release();
 
@@ -121,6 +162,22 @@ app.get("/push",function(req,res)
     });
     
 });
+app.get("/detailed_info/:id" , function(req,res)
+{
+    pool.getConnection(function(err, connection) {
+        if (err) throw err;
+        connection.query("use cricket",function(err,result)
+        {
+            if (err) throw err;
+        });
+        connection.query("select * from batting_info where cricket_id="+req.params.id.toString(),function(err,result)
+        {
+            if (err) throw err;
+            res.render("detailed_info",{data : result})
+        })
+    });
+    
+})
 app.get("/ajax_data",function(req,res){
     id=req.query.id;
     country=req.query.country;
@@ -227,6 +284,6 @@ var update_database = function (id,comment,run,wicket,over,batting,callback) {
     
 }
 
-http.listen(3000,function(){
+http.listen(3001,function(){
     console.log("Listening on 3000");
 });
