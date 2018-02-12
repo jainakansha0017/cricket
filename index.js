@@ -22,61 +22,60 @@ pool.getConnection(function(err, connection) {
     connection.query("use cricket", function (error, results) {
     // And done with the connection.
     console.log(results)
-    console.log("99999999")
     connection.query("CREATE TABLE IF NOT EXISTS cricket_info(id INT AUTO_INCREMENT PRIMARY KEY,name text,batting_status text, bowling_status text,batsman1 text,batsman2 text, bowlsman1 text,bowlsman2 text, total_run_bat int,total_over_bat float, total_wicket_bat int, total_run_bowl int,total_over_bowl float, total_wicket_bowl int, comment text,t_status TIMESTAMP DEFAULT CURRENT_TIMESTAMP)", function (error, results) 
     {
-    	// console.log(results);
+        // console.log(results);
 
     });
     connection.query("CREATE TABLE IF NOT EXISTS batting_info(cricket_id INT,batsman text ,run int, ball int, four_s int, six_s int)", function (error, results) 
     {
-    	// console.log(results);
-    	
+        // console.log(results);
+        
     });
     connection.query("CREATE TABLE IF NOT EXISTS bowling_info(cricket_id INT,bowlsman text ,over float, run int, wide int)", function (error, results) 
     {
-    	// console.log(results);
-    	
+        // console.log(results);
+        
     });
 
     connection.query("select * from cricket_info", function (error, results) 
     {
-    	console.log(results.length);
-    	if(results.length==0)
-    	{
-    		connection.query("insert into cricket_info values(1,'SL vs BAN','SL','BAN','A','B','C','D',45,1,10,0,0,0,null,now())", function (error, results) 
-		    {
-		    	console.log(results);
-		    	
-		    });
-		    connection.query("insert into cricket_info values(2,'AFG vs ZIM','ZIM','AFG','ABC','BCV','CAS','DWS',60,2,12,0,0,0,null,now())", function (error, results) 
-		    {
-		    	console.log(results);
-		    	
-		    });
-		    connection.query("insert into cricket_info values(3,'ENG vs AUS','ENG','AUS','QWE','ERT','TYU','IUY',100,5,4,0,0,0,null,now())", function (error, results) 
-		    {
-		    	console.log(results);
-		    	
-		    });
-		    connection.query("insert into cricket_info values(4,'IND vs SA','SA','IND','ASD','DFG','BNM','NBM',150,6,5,0,0,0,null,now())", function (error, results) 
-		    {
-		    	console.log(results);
-		    	
-		    });
-		    
-		    connection.query("insert into cricket_info values(5,'NZ vs PAK','PAK','NZ','QWER','WERT','GHJK','KJHH',250,5,50,0,0,0,null,now())", function (error, results) 
-		    {
-		    	console.log(results);
-		    });
-            connection.query("insert into cricket_info values(6,'WI vs KENYA','WI','KENYA','HJK','JKL','LOP','IUYT',145,2,5,0,0,0,null,now())", function (error, results) 
+        console.log(results.length);
+        if(results.length==0)
+        {
+            connection.query("insert into cricket_info values(1,'SL vs BAN','SL','BAN','A','B','C','D',45,10,1,0,0,0,null,now())", function (error, results) 
             {
                 console.log(results);
                 
             });
-    	}
+            connection.query("insert into cricket_info values(2,'AFG vs ZIM','ZIM','AFG','ABC','BCV','CAS','DWS',60,12,2,0,0,0,null,now())", function (error, results) 
+            {
+                console.log(results);
+                
+            });
+            connection.query("insert into cricket_info values(3,'ENG vs AUS','ENG','AUS','QWE','ERT','TYU','IUY',100,5,4,0,0,0,null,now())", function (error, results) 
+            {
+                console.log(results);
+                
+            });
+            connection.query("insert into cricket_info values(4,'IND vs SA','SA','IND','ASD','DFG','BNM','NBM',150,6,5,0,0,0,null,now())", function (error, results) 
+            {
+                console.log(results);
+                
+            });
+            
+            connection.query("insert into cricket_info values(5,'NZ vs PAK','PAK','NZ','QWER','WERT','GHJK','KJHH',250,50,5,0,0,0,null,now())", function (error, results) 
+            {
+                console.log(results);
+            });
+            connection.query("insert into cricket_info values(6,'WI vs KENYA','WI','KENYA','HJK','JKL','LOP','IUYT',145,5,2,0,0,0,null,now())", function (error, results) 
+            {
+                console.log(results);
+                
+            });
+        }
 
-    	
+        
     });
     connection.query("select * from batting_info", function (error, results) 
     {
@@ -144,7 +143,7 @@ app.get("/",function(req,res)
             res.render("widget",{data : result})
         })
     });
-	
+    
 });
 app.get("/push",function(req,res)
 {
@@ -285,5 +284,5 @@ var update_database = function (id,comment,run,wicket,over,batting,callback) {
 }
 
 http.listen(3001,function(){
-    console.log("Listening on 3000");
+    console.log("Listening on 3001");
 });
