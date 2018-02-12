@@ -8,30 +8,77 @@
 			
 	<body>
 		<% i=1 %>
+		<div  style = "padding:2%;"> 
 		<% data.forEach(function(item){ %> 	
-      	<div  style = "padding:2%;">
+      	
 	         <h4><%= item.name %></h4>
-			 <label>Update batting: </label>
-			 <select id="batting_<%= i %>" class="bat_bowl">
-				<option value=<%= item.batting_status%>><%= item.batting_status %></option>
-				<option value=<%= item.bowling_status%>><%= item.bowling_status %></option> 
-			 </select>
-			 <br>
-			 <label>Update Run: </label>
-			 <input type="text" id="run_<%= i %>" name="run_<%= i %>" value ="<%= item.total_run_bat %>"> 
-			 <br>
-			 <label>Update Wicket: </label>
-			 <input type="text" id="wicket_<%= i %>" name="wicket_<%= i %>" value ="<%= item.total_wicket_bat %>"> 
-			 <br>
-			 <label>Update over: </label>
-			 <input type="text" id="over_<%= i %>" name="over_<%= i %>" value ="<%= item.total_over_bat %>"> 
-			<br><br>
-	      <label>Comment: </label><textarea id="comment_<%= i %>" rows="1" cols=""></textarea><br>
-	        <input type="button" id="push_<%= i %>" class="update" value="Update">
-        
-    </div>
+	         <div class="form-group">
+    			<div class="row">
+        			<div class="col-xs-2"><label>Update batting: </label></div> 
+        			<div class="col-xs-2">   <!--added the class validtor-->
+             			<select id="batting_<%= i %>" name="batting_<%= i %>" class="bat_bowl form-control">
+							<option value=<%= item.batting_status%>><%= item.batting_status %></option>
+							<option value=<%= item.bowling_status%>><%= item.bowling_status %></option> 
+						 </select>
+
+        			</div>
+        			<div class="col-xs-8"></div> 
+   				 </div> 
+ 			</div>
+ 			<div class="form-group">
+    			<div class="row">
+        			<div class="col-xs-2"> <label>Update Run: </label></div> 
+        			<div class="col-xs-2">   <!--added the class validtor-->
+             			<input type="text" id="run_<%= i %>" name="run_<%= i %>" value ="<%= item.total_run_bat %>" class="form-control"> 
+
+        			</div>
+        			<div class="col-xs-8"></div> 
+   				 </div> 
+ 			</div>
+ 			<div class="form-group">
+    			<div class="row">
+        			<div class="col-xs-2"><label>Update Wicket: </label></div> 
+        			<div class="col-xs-2">   <!--added the class validtor-->
+             			 <input type="text" id="wicket_<%= i %>" name="wicket_<%= i %>" value ="<%= item.total_wicket_bat %>" class="form-control"> 
+
+        			</div>
+        			<div class="col-xs-8"></div> 
+   				 </div> 
+ 			</div>
+ 			<div class="form-group">
+    			<div class="row">
+        			<div class="col-xs-2"> <label>Update over: </label></div> 
+        			<div class="col-xs-2">   <!--added the class validtor-->
+             			 <input type="text" id="over_<%= i %>" name="over_<%= i %>" value ="<%= item.total_over_bat %>" class="form-control"> 
+
+        			</div>
+        			<div class="col-xs-8"></div> 
+   				 </div> 
+ 			</div>
+ 			<div class="form-group">
+    			<div class="row">
+        			<div class="col-xs-2"><label>Comment: </label></div> 
+        			<div class="col-xs-2">   <!--added the class validtor-->
+             			  <textarea id="comment_<%= i %>" id="comment_<%= i %>" rows="1" cols="" class="form-control" ></textarea>
+
+        			</div>
+        			<div class="col-xs-8"></div> 
+   				 </div> 
+ 			</div>
+ 			<div class="form-group">
+    			<div class="row">
+        			<div class="col-xs-2"></div> 
+        			<div class="col-xs-2">   <!--added the class validtor-->
+             			 <input type="button" id="push_<%= i %>" class="update btn btn-primary btn-block" value="Update">
+
+        			</div>
+        			<div class="col-xs-8"></div> 
+   				 </div> 
+ 			</div>     
+
     <% i= i+1%>
      <% }); %>
+</div>
 	</body>
 </html>
 
@@ -41,6 +88,7 @@
     <script>
     $(document).ready(function(){
           var socket = io();
+
           $(".update").click(function(){
           	id=this.id.split("_")[1]
             socket.emit('update',id,$("#comment_"+id).val(),$("#run_"+id).val(),$("#wicket_"+id).val(),$("#over_"+id).val(),$("#batting_"+id).val());
